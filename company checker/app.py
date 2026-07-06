@@ -7,8 +7,9 @@ load_dotenv()
 
 st.set_page_config(page_title="Company Checker")
 
-st.title("Company Checker")
-st.caption("An agent that researches a company before you intern or work there ")
+st.title("Company Red-Flag Checker")
+st.caption("An agent that researches a company before you intern or work there — "
+           "not a single search, but a careful, multi-step investigation.")
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
@@ -20,6 +21,13 @@ if not GROQ_API_KEY or not TAVILY_API_KEY:
     )
     st.stop()
 
+TOOL_LABELS = {
+    "search_web": "Web search",
+    "check_linkedin_presence": "LinkedIn check",
+    "check_official_website": "Website check",
+    "check_company_registry": "Registry check",
+}
+
 company_name = st.text_input("Company name", placeholder="e.g. Acme Corp")
 go = st.button("Investigate", type="primary", disabled=not company_name)
 
@@ -30,9 +38,12 @@ if go:
         final_markdown = None
         for event in agent.investigate(company_name):
             if event[0] == "search":
-                st.write(f"Searching: *{event[1]}*")
+                _, tool_name, arg_desc = event
+                label = TOOL_LABELS.get(tool_name, tool_name)
+                st.write(f"{label}: *{arg_desc}*")
             elif event[0] == "done_search":
-                st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;↳ found {event[2]} result(s)")
+                _, tool_name, n = event
+                st.write(f"&nbsp;&nbsp;&nbsp;&nbsp;↳ found {n} result(s)")
             elif event[0] == "retry":
                 st.write("")
             elif event[0] == "final":
