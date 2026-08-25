@@ -11,8 +11,8 @@ st.title("Company Red-Flag Checker")
 st.caption("An agent that researches a company before you intern or work there — "
            "not a single search, but a careful, multi-step investigation.")
 
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
+GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY"))
+TAVILY_API_KEY = st.secrets.get("TAVILY_API_KEY", os.environ.get("TAVILY_API_KEY"))
 
 if not GROQ_API_KEY or not TAVILY_API_KEY:
     st.error(
