@@ -1,4 +1,4 @@
-# 🔍 Internship / Company Red-Flag Checker
+# Internship / Company Red-Flag Checker
 
 > An agentic AI tool that researches a company before you intern or work there.
 
