@@ -27,7 +27,7 @@ import json
 from groq import Groq, BadRequestError
 from tavily import TavilyClient
 
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 MAX_TURNS = 14  # safety cap so the agent can't loop forever (includes any retries)
 
 SYSTEM_PROMPT = """You are a careful, skeptical researcher helping a student \
